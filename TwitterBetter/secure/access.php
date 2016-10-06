@@ -7,7 +7,8 @@
  */
 
 // Declare class to access this php file
-class access {
+class access
+{
 
     // global connection variables
     var $host = null;
@@ -19,7 +20,8 @@ class access {
 
 
     // constructing class
-    function __construct($dbhost, $dbuser, $dbpass, $dbname) {
+    function __construct($dbhost, $dbuser, $dbpass, $dbname)
+    {
 
         $this->host = $dbhost;
         $this->user = $dbuser;
@@ -29,14 +31,14 @@ class access {
     }
 
     // connection function
-    public function connect() {
+    public function connect()
+    {
 
         // establish connection and store it in $conn
         $this->conn = new mysqli($this->host, $this->user, $this->pass, $this->name);
 
         // if error
         if (mysqli_connect_errno()) {
-
             echo 'Could not connect to database';
 
         }
@@ -46,24 +48,66 @@ class access {
     }
 
 
-}
-
     // disconnection function
     public function disconnect() {
 
-        if ($this->conn != null ) {
-
+        if ($this->conn != null) {
             $this->conn->close();
 
         }
 
+    }
 
+    // Insert user details
+    public function registerUser($username, $password, $salt, $email, $fullname) {
 
+        // SQL command
+        $sql = "INSERT INTO users SET username=?, password=?, salt=?, email=?, fullname=?";
 
+        // Store query result in $statement
+        $statement = $this->conn->prepare($sql);
 
+        // if error
+        if (!$statement) {
+            throw new Exception($statement->error);
 
+        }
+
+        // Bind 5 params of type string to be placed in $sql command
+        $statement->bind_param("sssss", $username, $password, $salt, $email, $fullname);
+
+        $returnValue= $statement->execute();
+
+        return $returnValue;
 
     }
 
+    // Select user information
+    public function selectUser($username) {
+
+        //SQL command
+        $sql = "SELECT * FROM users WHERE username='".$username."'";
+
+        // Assign result we got from $sql to $result var
+        $result = $this->conn->query($sql);
+
+        // if there is at least 1 result returned
+        if ($result != null && (mysqli_num_rows($result) >=1 )) {
+
+            // Assign results we got to $row as associative array
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+
+            //
+            if (!empty($row)) {
+                $returnArray = $row;
+
+            }
+        }
+
+        return $returnArray;
+
+    }
+
+}
 ?>
 
