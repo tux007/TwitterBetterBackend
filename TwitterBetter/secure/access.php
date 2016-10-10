@@ -108,6 +108,32 @@ class access
 
     }
 
+    // Save email confirmation message token
+    public function saveToken($table, $id, $token) {
+
+        // sql statement
+        $sql = "INSERT INTO $table SET id=?, token=?";
+
+        // prepare statement to be executed
+        $statement = $this->conn->prepare($sql);
+
+        // Error occurred
+        if (!$statement) {
+            throw new Exception($statement->error);
+        }
+
+        // Bind params to sql statement
+        $statement->bind_param("is", $id, $token);
+
+        // launch and store feedback in $returnValue
+        $returnValue = $statement->execute();
+
+        return $returnValue;
+
+    }
+
+
+
 }
 ?>
 

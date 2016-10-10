@@ -52,8 +52,10 @@ $result = $access->registerUser($username, $secured_password, $salt, $email, $fu
 
 if ($result) {
 
+    // got current registered user information
     $user = $access->selectUser($username);
 
+    // Declare information to feedback to user of App as json
     $returnArray["status"] = "200";
     $returnArray["message"] = "Successfully registered";
     $returnArray["id"] = $user["id"];
@@ -62,6 +64,36 @@ if ($result) {
     $returnArray["fullname"] = $user["fullname"];
     $returnArray["ava"] = $user["ava"];
 
+    // STEP 4. Emailing
+    // Include email.php
+    require ("secure/email.php");
+
+    // Store all class in $email var
+    $email = new email();
+
+    // Store generated token in $token var
+    $token = $email->generateToken(20);
+
+    // Safe information in 'emailTokens' table
+    $access->saveToken("emailTokens", $user["id"], $token);
+
+    // refer emailing information
+    $details = array();
+    $details["subject"] = "Email confirmation for TwitterBetter";
+    $details["to"] = $user["email"];
+    $details["fromName"] = "TwitterBetter Administrator";
+    $details["fromEmail"] = "jepp.bone@gmail.com";
+
+    // Access template file
+    $template = $email->confirmationTemplate();
+    $template = str_replace("{token}", $token, $template);
+
+    $details["body"] = $template;
+
+    $email->sendEmail($details);
+
+
+
 
 } else {
     $returnArray["status"] = "400";
@@ -69,10 +101,10 @@ if ($result) {
 
 }
 
-    // STEP 4. DISCONNECT
+    // STEP 5. DISCONNECT
     $access->disconnect();
 
-    // STEP 5. Json data
+    // STEP 6. Json data
     echo json_encode($returnArray);
 
 

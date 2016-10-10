@@ -19,7 +19,7 @@ class email {
         $token = '';
 
         // Generate random char from $characters
-        for ($i = 0; $i < $charactersLength; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $token .= $characters[rand(0, $charactersLength-1)];
 
         }
