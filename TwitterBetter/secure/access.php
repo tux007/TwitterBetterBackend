@@ -193,6 +193,36 @@ class access
 
     }
 
+    // Get full user information
+    public function getUser($username) {
+
+        // Declare array to store all information
+        $returnArray = array();
+
+        // SQL statement
+        $sql = "SELECT * FROM users WHERE username='".$username."'";
+
+        // Execute / query $sql
+        $result = $this->conn->query($sql);
+
+        // Check if we get results
+        if ($result != null && (mysqli_num_rows($result) >= 1)) {
+
+            // Assign result to $row as assoc array
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+
+            // If assigned to $row - assign everything to $returnArray
+            if (!empty($row)) {
+                $returnArray = $row;
+
+            }
+
+        }
+
+        return $returnArray;
+
+    }
+
 
 
 
