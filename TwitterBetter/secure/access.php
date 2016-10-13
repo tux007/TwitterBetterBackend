@@ -85,6 +85,8 @@ class access
     // Select user information
     public function selectUser($username) {
 
+        $returnArray = array();
+
         //SQL command
         $sql = "SELECT * FROM users WHERE username='".$username."'";
 
@@ -217,6 +219,34 @@ class access
 
             }
 
+        }
+
+        return $returnArray;
+
+    }
+
+    // Select user information with email
+    public function selectUserViaEmail($email) {
+
+        $returnArray = array();
+
+        //SQL command
+        $sql = "SELECT * FROM users WHERE email='".$email."'";
+
+        // Assign result we got from $sql to $result var
+        $result = $this->conn->query($sql);
+
+        // if there is at least 1 result returned
+        if ($result != null && (mysqli_num_rows($result) >=1 )) {
+
+            // Assign results we got to $row as associative array
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+
+            //
+            if (!empty($row)) {
+                $returnArray = $row;
+
+            }
         }
 
         return $returnArray;

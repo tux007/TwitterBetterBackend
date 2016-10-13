@@ -42,6 +42,20 @@ class email {
 
     }
 
+    // Open resetPassword template
+    function resetPasswordTemplate() {
+
+        $file = fopen("templates/resetPasswordTemplate.html", "r") or die("Unable to open file");
+
+        // store content of file in $template var
+        $template = fread($file, filesize("templates/resetPasswordTemplate.html"));
+
+        fclose($file);
+
+        return $template;
+
+    }
+
     // Send email
     function sendEmail($details) {
 
