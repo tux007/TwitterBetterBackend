@@ -82,7 +82,7 @@ if ($result) {
     $details["subject"] = "Email confirmation for TwitterBetter";
     $details["to"] = $user["email"];
     $details["fromName"] = "TwitterBetter Administrator";
-    $details["fromEmail"] = "jepp.bone@gmail.com";
+    $details["fromEmail"] = "ios2test@gmail.com";
 
     // Access template file
     $template = $email->confirmationTemplate();
