@@ -47,6 +47,32 @@ $access = new access($host, $user, $pass, $name);
 $access->connect();
 
 
+// check if username already exists in db
+$result = $access->getUser($username);
+
+if ($result) {
+
+    $returnArray["message"] = "Username already exists. Please choose another one!";
+    $returnArray["status"] = "400";
+    echo json_encode($returnArray);
+    return;
+
+}
+
+
+// check if email address already exists in db
+$result = $access->selectUserViaEmail($email);
+
+if ($result) {
+
+    $returnArray["message"] = "Email address already exists. Please choose another one!";
+    $returnArray["status"] = "400";
+    echo json_encode($returnArray);
+    return;
+
+}
+
+
 // STEP 3. Insert user information
 $result = $access->registerUser($username, $secured_password, $salt, $email, $fullname);
 
