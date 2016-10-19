@@ -63,7 +63,7 @@ $details = array();
 $details["subject"] = "Password reset request for TwitterBetter";
 $details["to"] = $user["email"];
 $details["fromName"] = "TwitterBetter Administrator";
-$details["fromEmail"] = "jepp.bone@gmail.com";
+$details["fromEmail"] = "ios2test@gmail.com";
 
 // Load HTML template
 $template = $email->resetPasswordTemplate();

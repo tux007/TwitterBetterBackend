@@ -56,7 +56,7 @@ $secured_password = $user["password"];
 $salt = $user["salt"];
 
 // Do passwords match: from db & entered pw
-if ($secured_password = sha1($password . $salt)) {
+if ($secured_password == sha1($password . $salt)) {
 
     $returnArray["status"] = "200";
     $returnArray["message"] = "Logged in successfully";

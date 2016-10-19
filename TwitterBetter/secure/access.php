@@ -253,6 +253,24 @@ class access
 
     }
 
+    // Updating password via link we received via 'reset password email'
+    public function updatePassword($id, $password, $salt) {
+
+        $sql = "UPDATE users SET password=?, salt=? WHERE id=?";
+        $statement = $this->conn->prepare($sql);
+
+        if (!$statement) {
+            throw new Exception($statement->error);
+        }
+
+        $statement->bind_param("ssi", $password, $salt, $id);
+
+        $returnValue = $statement->execute();
+
+        return $returnValue;
+
+
+    }
 
 
 
